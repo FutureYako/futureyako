@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-50: #f5f3ff;
+  --color-brand-100: #ede9ff;
+  --color-brand-200: #d4cdff;
+  --color-brand-300: #b5aaff;
+  --color-brand-400: #9282ff;
+  --color-brand-500: #6c63ff;
+  --color-brand-600: #5a52e0;
+  --color-brand-700: #4a43c0;
+  --color-brand-800: #3c3699;
+  --color-brand-900: #2d2873;
+
+  --color-success: #22c55e;
+  --color-success-light: #dcfce7;
+  --color-danger: #ef4444;
+  --color-danger-light: #fee2e2;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3c7;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+
+  --radius-card: 12px;
+  --radius-input: 8px;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html, body {
+  background: #f5f4ff;
+  color: #1e293b;
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* {
+  box-sizing: border-box;
+}
+
+@layer components {
+  .input-field {
+    @apply w-full px-4 py-2.5 text-sm text-slate-800 bg-white border-[1.5px] border-slate-200 rounded-lg outline-none transition-colors focus:border-brand-500 placeholder:text-slate-400;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  .btn-primary {
+    @apply w-full bg-brand-500 hover:bg-brand-600 text-white font-semibold text-[15px] py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-outline {
+    @apply bg-transparent text-brand-500 border-[1.5px] border-brand-500 hover:bg-brand-50 font-medium text-sm px-5 py-2.5 rounded-lg transition-colors;
+  }
+  .card {
+    @apply bg-white rounded-xl shadow-[0_2px_12px_rgba(108,99,255,0.10)];
+  }
+  .label-sm {
+    @apply text-xs text-slate-500 mb-1.5 block font-medium;
+  }
 }
