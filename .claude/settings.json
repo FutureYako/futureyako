@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npm run *)",
       "Bash(npm audit *)",
-      "Bash(npm info *)"
+      "Bash(npm info *)",
+      "Bash(npm install *)"
     ]
   }
 }
