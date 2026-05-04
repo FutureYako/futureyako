@@ -6,6 +6,12 @@ async function proxy(req: NextRequest, { params }: { params: Promise<{ path: str
   try {
     const { path } = await params;
 
+    // The ultraner forwarder lives at app/api/ultraner/ — should take priority via Next.js routing,
+    // but as a safety net, explicitly refuse to forward those paths to Django
+    if (path[0] === 'ultraner') {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    }
+
     // Preserve trailing slash — Django APPEND_SLASH will 301 without it, breaking POST bodies
     const trailingSlash = req.nextUrl.pathname.endsWith('/') ? '/' : '';
     const target = `${BACKEND_URL}/api/${path.join('/')}${trailingSlash}`;
