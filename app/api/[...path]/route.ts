@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:8000';
+// Local dev: http://localhost:8000/api  (Django serves directly)
+// Production VPS: https://api.futureyako.site  (Nginx rewrites path and prepends /api internally)
+const BACKEND_URL = (process.env.BACKEND_URL ?? 'http://localhost:8000/api').replace(/\/$/, '');
 
 async function proxy(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
   try {
@@ -14,7 +16,7 @@ async function proxy(req: NextRequest, { params }: { params: Promise<{ path: str
 
     // Always add trailing slash — Django's APPEND_SLASH would redirect without it,
     // and fetch follows POST redirects as GET (body lost)
-    const target = `${BACKEND_URL}/api/${path.join('/')}/`;
+    const target = `${BACKEND_URL}/${path.join('/')}/`;
 
     const url = new URL(target);
     req.nextUrl.searchParams.forEach((v, k) => url.searchParams.set(k, v));
