@@ -3,11 +3,6 @@ from django.conf import settings
 
 ULTRANER_BASE = "https://api.ultraner.com"
 
-# When Django is hosted on a platform that restricts outbound connections (e.g. PythonAnywhere),
-# set ULTRANER_VIA_URL to the Next.js forwarder URL so calls route through Vercel instead.
-_ULTRANER_VIA_URL = getattr(settings, "ULTRANER_VIA_URL", "").rstrip("/")
-_FORWARDER_SECRET = getattr(settings, "ULTRANER_FORWARDER_SECRET", "")
-
 # Canonical provider names as Ultraner expects them
 _PROVIDER_CANONICAL = {
     "airtel": "Airtel",
@@ -58,18 +53,9 @@ class UltranerClient:
         }
 
     def _post(self, path: str, payload: dict) -> dict:
-        if _ULTRANER_VIA_URL:
-            # Route through Next.js/Vercel forwarder to bypass outbound proxy restrictions
-            url = f"{_ULTRANER_VIA_URL}{path}"
-            req_headers = {"Content-Type": "application/json"}
-            if _FORWARDER_SECRET:
-                req_headers["X-Forwarder-Secret"] = _FORWARDER_SECRET
-        else:
-            url = f"{ULTRANER_BASE}{path}"
-            req_headers = self.headers
-
+        url = f"{ULTRANER_BASE}{path}"
         try:
-            resp = requests.post(url, json=payload, headers=req_headers, timeout=30)
+            resp = requests.post(url, json=payload, headers=self.headers, timeout=30)
         except requests.RequestException as exc:
             raise UltranerError(f"Network error contacting payment gateway: {exc}")
 
