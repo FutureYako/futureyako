@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BankIcon, PhoneIcon, ArrowIcon, CheckIcon } from "@/components/icons";
 
-const STEPS = ["Sign Up", "Login", "Link Sources", "Account Details", "Wallet Created"];
+const STEPS = ["Sign Up", "Login", "Link Sources", "Account Details", "Saving Prefs", "Routing", "Review", "Wallet Created"];
 
 export default function LinkSourcesPage() {
   const router = useRouter();

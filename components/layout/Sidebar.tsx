@@ -1,18 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   HomeIcon, PortfolioIcon, GoalsIcon, TxIcon, FundIcon,
-  InvestIcon, UserIcon, SettingsIcon, HelpIcon, WalletIcon,
+  InvestIcon, UserIcon, SettingsIcon, HelpIcon, WalletIcon, LogoutIcon, FlowIcon,
 } from "@/components/icons";
 
 const navItems = [
   { href: "/dashboard", icon: HomeIcon, label: "Dashboard" },
   { href: "/portfolio", icon: PortfolioIcon, label: "Portfolio" },
-  { href: "/setup/goals", icon: GoalsIcon, label: "Goals" },
+  { href: "/goals", icon: GoalsIcon, label: "Goals" },
   { href: "/transactions", icon: TxIcon, label: "Transactions" },
-  { href: "/link-sources", icon: FundIcon, label: "Funding Sources" },
+  { href: "/funding-sources", icon: FundIcon, label: "Funding Sources" },
+  { href: "/autosave-flow", icon: FlowIcon, label: "Auto-Save Flow" },
   { href: "/investments", icon: InvestIcon, label: "Investments" },
   { href: "/profile", icon: UserIcon, label: "Profile" },
   { href: "/settings", icon: SettingsIcon, label: "Settings" },
@@ -21,6 +22,14 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("onboarding_complete");
+    router.push("/login");
+  };
 
   return (
     <aside className="w-[220px] min-w-[220px] bg-white border-r border-slate-200 flex flex-col py-6">
@@ -32,24 +41,35 @@ export default function Sidebar() {
           <span className="font-extrabold text-base text-slate-800">SaveWise</span>
         </Link>
       </div>
-      {navItems.map((item) => {
-        const Icon = item.icon;
-        const isActive = pathname === item.href.split("?")[0];
-        return (
-          <Link
-            key={item.label}
-            href={item.href}
-            className={`flex items-center gap-3 px-6 py-2.5 text-sm transition-all ${
-              isActive
-                ? "text-brand-500 bg-brand-50 font-semibold border-l-[3px] border-brand-500"
-                : "text-slate-500 hover:bg-slate-50"
-            }`}
-          >
-            <Icon size={16} />
-            <span>{item.label}</span>
-          </Link>
-        );
-      })}
+      <div className="flex-1">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = pathname === item.href.split("?")[0];
+          return (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={`flex items-center gap-3 px-6 py-2.5 text-sm transition-all ${
+                isActive
+                  ? "text-brand-500 bg-brand-50 font-semibold border-l-[3px] border-brand-500"
+                  : "text-slate-500 hover:bg-slate-50"
+              }`}
+            >
+              <Icon size={16} />
+              <span>{item.label}</span>
+            </Link>
+          );
+        })}
+      </div>
+      <div className="px-6 pt-4 border-t border-slate-200 mt-auto">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-3 px-0 py-2.5 text-sm text-slate-500 hover:text-danger transition-all w-full"
+        >
+          <LogoutIcon size={16} />
+          <span>Logout</span>
+        </button>
+      </div>
     </aside>
   );
 }

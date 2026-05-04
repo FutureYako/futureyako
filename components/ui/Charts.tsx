@@ -1,17 +1,28 @@
 type DonutDatum = { val: number; color: string; label?: string };
 
 export function DonutChart({ data }: { data: DonutDatum[] }) {
-  const total = data.reduce((s, d) => s + d.val, 0);
+  const total = data.reduce((s, d) => s + (Number(d.val) || 0), 0);
   const r = 44;
   const cx = 55;
   const cy = 55;
   const circ = 2 * Math.PI * r;
   let cumulative = 0;
 
+  // Don't render if total is 0 or NaN to avoid NaN attributes
+  if (!total || !isFinite(total)) {
+    return (
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke="#e2e8f0" strokeWidth="18" />
+        <circle cx={cx} cy={cy} r="30" fill="#fff" />
+      </svg>
+    );
+  }
+
   return (
     <svg width="110" height="110" viewBox="0 0 110 110">
       {data.map((d, i) => {
-        const dash = (circ * d.val) / total;
+        const val = Number(d.val) || 0;
+        const dash = (circ * val) / total;
         const offset = -cumulative + circ / 4;
         cumulative += dash;
         return (

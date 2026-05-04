@@ -50,7 +50,7 @@ const FAQS = [
   },
   {
     q: "Is there a minimum savings amount?",
-    a: "There's no minimum for your savings wallet. Investment funds have their own minimums — typically starting at $50, shown on each fund card.",
+    a: "There's no minimum for your savings wallet. Investment funds have their own minimums, typically starting at TSh 50, shown on each fund card.",
   },
 ];
 

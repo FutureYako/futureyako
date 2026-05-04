@@ -55,7 +55,7 @@ export default function ReviewPage() {
           </button>
           <button
             className="btn-primary flex-[2]"
-            onClick={() => router.push("/setup/success")}
+            onClick={() => router.push("/wallet-created")}
           >
             Confirm &amp; Start Saving
           </button>

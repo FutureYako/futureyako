@@ -2,30 +2,28 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Stepper from "@/components/ui/Stepper";
-import { SETUP_STEPS } from "@/lib/constants";
 
 const FREQUENCIES = ["Daily", "Weekly", "Monthly", "Every 2 Months"];
 const SOURCES = ["Bank Account", "Mobile Money", "Both"];
 
-export default function AutosavingPage() {
+export default function EditSavingPreferencesPage() {
   const router = useRouter();
   const [type, setType] = useState<"Percentage" | "Fixed Amount">("Percentage");
   const [freq, setFreq] = useState("Monthly");
   const [src, setSrc] = useState("Both");
 
   return (
-    <div className="p-8 max-w-[600px] mx-auto w-full">
-      <Stepper steps={SETUP_STEPS} current={0} />
+    <div className="p-8 max-w-150 mx-auto w-full">
+      <div className="mb-6">
+        <h1 className="text-xl font-extrabold text-slate-800 mb-1">
+          Edit Saving Preferences
+        </h1>
+        <p className="text-slate-500 text-sm">
+          Update how, how much, and how long you save. Changes take effect from your next deduction cycle.
+        </p>
+      </div>
 
       <div className="card p-7">
-        <h1 className="text-lg font-extrabold text-slate-800 mb-1">
-          Define your autosaving preferences
-        </h1>
-        <p className="text-slate-500 text-[13px] mb-6">
-          Set how, how much, and how long you want to save
-        </p>
-
         <div className="mb-4">
           <label className="label-sm">Saving Amount</label>
           <div className="flex bg-slate-100 rounded-lg p-1 gap-1 mb-3">
@@ -44,8 +42,10 @@ export default function AutosavingPage() {
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <input className="input-field !w-20" defaultValue="10" />
-            <span className="text-slate-500 text-sm">% of income</span>
+            <input className="input-field w-20!" defaultValue="10" />
+            <span className="text-slate-500 text-sm">
+              {type === "Percentage" ? "% of income" : "fixed per cycle"}
+            </span>
           </div>
         </div>
 
@@ -70,21 +70,19 @@ export default function AutosavingPage() {
 
         <div className="mb-4">
           <label className="label-sm">Saving Duration</label>
-          <div className="flex gap-3">
+          <div className="flex items-center gap-2">
             <input
-              className="input-field flex-1"
-              placeholder="Minimum 4 months"
+              className="input-field w-28!"
+              type="number"
+              min={4}
+              placeholder="e.g. 6"
             />
-            <select className="input-field flex-1">
-              <option>6 Months</option>
-              <option>12 Months</option>
-              <option>24 Months</option>
-            </select>
+            <span className="text-slate-500 text-sm">months (minimum 4)</span>
           </div>
         </div>
 
         <div className="mb-6">
-          <label className="label-sm">Select Funding Source</label>
+          <label className="label-sm">Funding Source</label>
           <div className="flex flex-wrap gap-1.5">
             {SOURCES.map((s) => (
               <button
@@ -105,9 +103,20 @@ export default function AutosavingPage() {
           </p>
         </div>
 
-        <button className="btn-primary" onClick={() => router.push("/setup/goals")}>
-          Continue
-        </button>
+        <div className="flex gap-3">
+          <button
+            className="btn-outline flex-1"
+            onClick={() => router.push("/dashboard")}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn-primary flex-2"
+            onClick={() => router.push("/dashboard")}
+          >
+            Save Changes
+          </button>
+        </div>
       </div>
     </div>
   );

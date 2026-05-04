@@ -49,6 +49,9 @@ export const CheckIcon = ({ size, ...p }: IconProps) => (
 export const BankIcon = ({ size, ...p }: IconProps) => (
   <svg {...base(size)} {...p}><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
 );
+export const LogoutIcon = ({ size, ...p }: IconProps) => (
+  <svg {...base(size)} {...p}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+);
 export const PhoneIcon = ({ size, ...p }: IconProps) => (
   <svg {...base(size)} {...p}><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
 );
@@ -69,4 +72,10 @@ export const WalletIcon = ({ size, ...p }: IconProps) => (
 );
 export const ChevronDown = ({ size, ...p }: IconProps) => (
   <svg {...base(size)} {...p}><polyline points="6 9 12 15 18 9"/></svg>
+);
+export const FlowIcon = ({ size, ...p }: IconProps) => (
+  <svg {...base(size)} {...p}><circle cx="6" cy="12" r="2"/><circle cx="18" cy="12" r="2"/><path d="M8 12h8"/><path d="M3 6h4a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3"/><path d="M21 18h-4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg>
+);
+export const ZapIcon = ({ size, ...p }: IconProps) => (
+  <svg {...base(size)} {...p}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
 );

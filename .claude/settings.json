@@ -4,7 +4,29 @@
       "Bash(npm run *)",
       "Bash(npm audit *)",
       "Bash(npm info *)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\dauso\\\\future_yako\" -Directory)",
+      "Bash(Select-Object Name)",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\dauso\\\\future_yako\" -Directory | ForEach-Object { $_.Name })",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\dauso\\\\future_yako\" -Force)",
+      "Bash(Select-Object Name, PSIsContainer)",
+      "Bash(Format-Table -AutoSize)",
+      "Bash(python manage.py makemigrations admin_panel --name \"add_payment_provider_and_admin_choices\")",
+      "Bash(ls venv *)",
+      "Bash(ls .venv)",
+      "Bash(ls env *)",
+      "Read(//c/Users/dauso/**)",
+      "PowerShell(head -20)",
+      "PowerShell(Get-ChildItem \"c:\\\\Users\\\\dauso\" -Name | Where-Object { $_ -match \"venv|\\\\.venv|env|miniconda|anaconda|python\" })",
+      "PowerShell(python --version 2>&1)",
+      "PowerShell(pip show django 2>&1)",
+      "PowerShell(c:\\\\Users\\\\dauso\\\\future_yako\\\\.venv\\\\Scripts\\\\pip.exe show django 2>&1)",
+      "PowerShell(Get-ChildItem \"c:\\\\Users\\\\dauso\\\\future_yako\\\\.venv\\\\Scripts\" -Name | Where-Object { $_ -match \"python|pip|activate\" })",
+      "PowerShell(& \"c:\\\\Users\\\\dauso\\\\future_yako\\\\.venv\\\\Scripts\\\\python.exe\" -c \"import django; print\\(django.__version__\\)\")",
+      "PowerShell($env:DJANGO_SETTINGS_MODULE=\"config.settings.development\"; Set-Location \"c:\\\\Users\\\\dauso\\\\future_yako\\\\backend\"; python -c \"import sys; sys.path.insert\\(0, '.'\\); import django; print\\(django.__version__\\)\" 2>&1)",
+      "PowerShell(python -m pip show django 2>&1)",
+      "PowerShell(where.exe pip 2>&1; \\(Get-Command pip\\).Source 2>&1)"
     ]
   }
 }

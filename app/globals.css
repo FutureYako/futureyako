@@ -38,6 +38,86 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Dark mode styles */
+html.dark, html.dark body {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+html.dark .card {
+  background: #1e293b;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .input-field {
+  background: #1e293b;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+html.dark .input-field:focus {
+  border-color: #6c63ff;
+}
+
+html.dark .btn-outline {
+  border-color: #6c63ff;
+  color: #9282ff;
+}
+
+html.dark .btn-outline:hover {
+  background: rgba(108, 99, 255, 0.1);
+}
+
+/* Dark mode sidebar */
+html.dark aside {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+html.dark aside a {
+  color: #94a3b8;
+}
+
+html.dark aside a:hover {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+html.dark aside a[class*="bg-brand-50"] {
+  background: rgba(108, 99, 255, 0.15);
+  color: #9282ff;
+}
+
+/* Dark mode text colors */
+html.dark .text-slate-800 {
+  color: #e2e8f0;
+}
+
+html.dark .text-slate-500 {
+  color: #94a3b8;
+}
+
+html.dark .text-slate-400 {
+  color: #64748b;
+}
+
+html.dark .text-slate-600 {
+  color: #cbd5e1;
+}
+
+html.dark .border-slate-200 {
+  border-color: #334155;
+}
+
+html.dark .border-slate-100 {
+  border-color: #334155;
+}
+
+html.dark .bg-slate-50,
+html.dark .bg-slate-100 {
+  background: #334155;
+}
+
 * {
   box-sizing: border-box;
 }

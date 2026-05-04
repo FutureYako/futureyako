@@ -1,33 +1,63 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CheckIcon, CopyIcon } from "@/components/icons";
+import { API_ENDPOINTS, apiGet } from "@/lib/api";
 
-const STEPS = ["Sign Up", "Login", "Link Sources", "Wallet Created"];
-const WALLET_NUMBER = "SV 8937 2345 6712";
+const STEPS = ["Sign Up", "Login", "Link Sources", "Account Details", "Saving Prefs", "Routing", "Review", "Wallet Created"];
+
+interface Wallet {
+  wallet_number: string;
+}
 
 export default function WalletCreatedPage() {
+  const [walletNumber, setWalletNumber] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const fetchWallet = async () => {
+      try {
+        const data: Wallet = await apiGet(API_ENDPOINTS.WALLETS.DETAIL);
+        setWalletNumber(data.wallet_number);
+      } catch (err) {
+        console.error('Failed to fetch wallet:', err);
+        setWalletNumber("SV 0000 0000 0000");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchWallet();
+  }, []);
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(WALLET_NUMBER);
+      await navigator.clipboard.writeText(walletNumber);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {}
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-5 py-8">
+        <div className="text-slate-500">Creating your wallet...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center px-5 py-8">
-      <div className="max-w-[440px] w-full">
+      <div className="max-w-110 w-full">
         <div className="flex justify-center gap-2 mb-7">
           {STEPS.map((_, i) => (
             <div key={i} className="flex items-center gap-1.5">
               <div className="w-7 h-7 rounded-full bg-brand-500 text-white flex items-center justify-center">
                 <CheckIcon size={12} />
               </div>
-              {i < STEPS.length - 1 && <div className="w-6 h-0.5 bg-brand-500" />}
+              {i < STEPS.length - 1 && <div className="w-3 h-0.5 bg-brand-500" />}
             </div>
           ))}
         </div>
@@ -49,7 +79,7 @@ export default function WalletCreatedPage() {
             </div>
             <div className="flex items-center justify-center gap-3">
               <span className="font-extrabold text-lg text-brand-500 tracking-[2px]">
-                {WALLET_NUMBER}
+                {walletNumber}
               </span>
               <button
                 onClick={handleCopy}

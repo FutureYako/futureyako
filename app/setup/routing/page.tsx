@@ -81,7 +81,7 @@ export default function RoutingPage() {
         <div className="flex gap-3">
           <button
             className="btn-outline flex-1"
-            onClick={() => router.push("/setup/goals")}
+            onClick={() => router.push("/setup/autosaving")}
           >
             Back
           </button>
