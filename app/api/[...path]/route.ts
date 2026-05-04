@@ -3,36 +3,47 @@ import { NextRequest, NextResponse } from 'next/server';
 const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:8000';
 
 async function proxy(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
-  const { path } = await params;
-  const target = `${BACKEND_URL}/api/${path.join('/')}`;
+  try {
+    const { path } = await params;
 
-  const url = new URL(target);
-  req.nextUrl.searchParams.forEach((v, k) => url.searchParams.set(k, v));
+    // Preserve trailing slash — Django APPEND_SLASH will 301 without it, breaking POST bodies
+    const trailingSlash = req.nextUrl.pathname.endsWith('/') ? '/' : '';
+    const target = `${BACKEND_URL}/api/${path.join('/')}${trailingSlash}`;
 
-  const skipHeaders = new Set(['host', 'connection', 'transfer-encoding']);
-  const headers = new Headers();
-  req.headers.forEach((v, k) => {
-    if (!skipHeaders.has(k.toLowerCase())) headers.set(k, v);
-  });
+    const url = new URL(target);
+    req.nextUrl.searchParams.forEach((v, k) => url.searchParams.set(k, v));
 
-  let body: BodyInit | undefined;
-  const method = req.method.toUpperCase();
-  if (!['GET', 'HEAD'].includes(method)) {
-    body = await req.arrayBuffer();
+    // Forward all headers except hop-by-hop ones
+    const skipReqHeaders = new Set(['host', 'connection', 'transfer-encoding', 'content-length']);
+    const headers = new Headers();
+    req.headers.forEach((v, k) => {
+      if (!skipReqHeaders.has(k.toLowerCase())) headers.set(k, v);
+    });
+    // Ask backend not to compress — avoids content-encoding mismatch after Node decompresses
+    headers.set('accept-encoding', 'identity');
+
+    const method = req.method.toUpperCase();
+    const body = ['GET', 'HEAD'].includes(method) ? undefined : await req.arrayBuffer();
+
+    const upstream = await fetch(url.toString(), { method, headers, body });
+
+    // Read as buffer — safer than streaming across runtimes
+    const resBody = await upstream.arrayBuffer();
+
+    const skipResHeaders = new Set(['transfer-encoding', 'connection', 'content-encoding']);
+    const resHeaders = new Headers();
+    upstream.headers.forEach((v, k) => {
+      if (!skipResHeaders.has(k.toLowerCase())) resHeaders.set(k, v);
+    });
+
+    return new NextResponse(resBody, { status: upstream.status, headers: resHeaders });
+  } catch (err) {
+    console.error('[proxy]', err);
+    return NextResponse.json(
+      { error: 'Backend unreachable', detail: String(err) },
+      { status: 502 }
+    );
   }
-
-  const upstream = await fetch(url.toString(), { method, headers, body, duplex: 'half' } as RequestInit);
-
-  const resHeaders = new Headers();
-  upstream.headers.forEach((v, k) => {
-    const lower = k.toLowerCase();
-    if (!['transfer-encoding', 'connection'].includes(lower)) resHeaders.set(k, v);
-  });
-
-  return new NextResponse(upstream.body, {
-    status: upstream.status,
-    headers: resHeaders,
-  });
 }
 
 export const GET = proxy;
