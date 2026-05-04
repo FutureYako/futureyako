@@ -12,9 +12,9 @@ async function proxy(req: NextRequest, { params }: { params: Promise<{ path: str
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }
 
-    // Preserve trailing slash — Django APPEND_SLASH will 301 without it, breaking POST bodies
-    const trailingSlash = req.nextUrl.pathname.endsWith('/') ? '/' : '';
-    const target = `${BACKEND_URL}/api/${path.join('/')}${trailingSlash}`;
+    // Always add trailing slash — Django's APPEND_SLASH would redirect without it,
+    // and fetch follows POST redirects as GET (body lost)
+    const target = `${BACKEND_URL}/api/${path.join('/')}/`;
 
     const url = new URL(target);
     req.nextUrl.searchParams.forEach((v, k) => url.searchParams.set(k, v));
