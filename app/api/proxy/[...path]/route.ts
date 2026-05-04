@@ -1,18 +1,14 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: Request, { params }: { params: { path: string[] } }) {
-  const backendUrl = process.env.BACKEND_URL; // Use the backend URL from .env.local
-  const apiPath = params.path.join('/'); // Combine the dynamic path segments
-  const url = `${backendUrl}/${apiPath}`;
+export async function GET(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
+  const backendUrl = process.env.BACKEND_URL;
+  const { path } = await params;
+  const url = `${backendUrl}/api/${path.join('/')}`;
 
   try {
     const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
     });
-
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
@@ -21,21 +17,18 @@ export async function GET(req: Request, { params }: { params: { path: string[] }
   }
 }
 
-export async function POST(req: Request, { params }: { params: { path: string[] } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
   const backendUrl = process.env.BACKEND_URL;
-  const apiPath = params.path.join('/');
-  const url = `${backendUrl}/${apiPath}`;
+  const { path } = await params;
+  const url = `${backendUrl}/api/${path.join('/')}`;
 
   try {
     const body = await req.json();
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
-
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
