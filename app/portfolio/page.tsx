@@ -102,7 +102,7 @@ export default function PortfolioPage() {
 
   if (isLoading) {
     return (
-      <div className="p-8 flex items-center justify-center min-h-[400px]">
+      <div className="p-4 sm:p-8 flex items-center justify-center min-h-100">
         <div className="text-slate-500">{t("common.loading")}</div>
       </div>
     );
@@ -135,9 +135,9 @@ export default function PortfolioPage() {
   const grandTotal = totalValue + availableBalance;
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-xl font-extrabold text-slate-800">Portfolio</h1>
           <p className="text-slate-500 text-sm">Your wealth breakdown &amp; performance</p>
@@ -160,8 +160,9 @@ export default function PortfolioPage() {
       </div>
 
       {/* Summary strip */}
-      <div className="card p-5 mb-6 flex items-center gap-0 divide-x divide-slate-100">
-        <div className="pr-8">
+      <div className="card p-5 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:divide-x sm:divide-slate-100 gap-4 sm:gap-0">
+        <div className="sm:pr-8">
           <div className="text-xs text-slate-400 mb-0.5">Total Value</div>
           <div className="text-3xl font-black text-slate-800">{formatCurrency(grandTotal)}</div>
           <div className="flex items-center gap-1.5 mt-1">
@@ -173,20 +174,23 @@ export default function PortfolioPage() {
             <span className="text-[11px] text-slate-400">this {period}</span>
           </div>
         </div>
-        {[
-          { label: "Total Returns", val: `${totalReturns >= 0 ? "+" : ""}${formatCurrency(totalReturns)}`, color: totalReturns >= 0 ? "text-success" : "text-danger" },
-          { label: "Active Holdings", val: String(holdings.length), color: "text-slate-800" },
-          { label: "Investing Since", val: investingSince || "N/A", color: "text-slate-800" },
-        ].map((s) => (
-          <div key={s.label} className="px-8">
-            <div className="text-xs text-slate-400 mb-1">{s.label}</div>
-            <div className={`text-lg font-extrabold ${s.color}`}>{s.val}</div>
-          </div>
-        ))}
+        <div className="grid grid-cols-3 sm:contents gap-3">
+          {[
+            { label: "Total Returns", val: `${totalReturns >= 0 ? "+" : ""}${formatCurrency(totalReturns)}`, color: totalReturns >= 0 ? "text-success" : "text-danger" },
+            { label: "Active Holdings", val: String(holdings.length), color: "text-slate-800" },
+            { label: "Investing Since", val: investingSince || "N/A", color: "text-slate-800" },
+          ].map((s) => (
+            <div key={s.label} className="sm:px-8">
+              <div className="text-xs text-slate-400 mb-1">{s.label}</div>
+              <div className={`text-base sm:text-lg font-extrabold ${s.color}`}>{s.val}</div>
+            </div>
+          ))}
+        </div>
+        </div>
       </div>
 
       {/* Holdings table + Allocation side by side */}
-      <div className="grid grid-cols-[1fr_280px] gap-5 mb-5">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-5 mb-5">
         {/* Holdings table */}
         <div className="card p-5">
           <div className="font-bold text-sm text-slate-800 mb-4">Holdings</div>
@@ -194,6 +198,8 @@ export default function PortfolioPage() {
             <div className="py-8 text-center text-slate-400 text-sm">No active holdings</div>
           ) : (
             <>
+              <div className="overflow-x-auto -mx-1">
+              <div className="min-w-95 px-1">
               <div className="grid grid-cols-[1fr_auto_auto_auto] gap-x-4 text-[11px] font-semibold text-slate-400 uppercase tracking-wide pb-2 border-b border-slate-100 mb-1">
                 <span>Asset</span>
                 <span className="text-right">Value</span>
@@ -242,6 +248,8 @@ export default function PortfolioPage() {
                     </div>
                   );
                 })}
+              </div>
+              </div>
               </div>
             </>
           )}

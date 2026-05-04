@@ -97,14 +97,14 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="p-8 flex items-center justify-center min-h-[400px]">
+      <div className="p-4 sm:p-8 flex items-center justify-center min-h-100">
         <div className="text-slate-500">{t("common.loading")}</div>
       </div>
     );
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <div className="mb-5">
         <h1 className="text-xl font-extrabold text-slate-800">
           {t("dashboard.welcome")}, {userName} 👋
@@ -120,7 +120,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-5 mb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-5">
         <div className="card p-5">
           <div className="font-bold text-sm text-slate-800 mb-4">
             {t("dashboard.savings_breakdown")}
@@ -175,7 +175,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 mb-5">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5">
         {stats.map((s) => (
           <div key={s.label} className="card p-4">
             <div className="text-xs text-slate-500 mb-1">{s.label}</div>
@@ -194,7 +194,7 @@ export default function DashboardPage() {
         <SparkLine />
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
         <Link href="/setup/autosaving" className="btn-primary text-center py-3!">
           {t("common.setup")} Autosave
         </Link>

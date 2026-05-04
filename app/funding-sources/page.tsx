@@ -293,7 +293,7 @@ export default function FundingSourcesPage() {
 
   return (
     <>
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         {isLoading ? (
           <div className="flex items-center justify-center min-h-[300px]">
             <div className="text-slate-500">Loading funding sources…</div>
@@ -311,7 +311,7 @@ export default function FundingSourcesPage() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-3 mb-6">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
               <div className="card p-4">
                 <div className="text-xs text-slate-500 mb-1">Total Sources</div>
                 <div className="text-xl font-extrabold text-slate-800">{sources.length}</div>

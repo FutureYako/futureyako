@@ -1202,7 +1202,7 @@ export default function GoalsPage() {
 
   return (
     <>
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <div className="flex items-center justify-between mb-5">
           <div>
             <h1 className="text-xl font-extrabold text-slate-800">{t("goals.title")}</h1>
@@ -1231,7 +1231,7 @@ export default function GoalsPage() {
         ) : (
           <>
             {/* Summary */}
-            <div className="grid grid-cols-4 gap-3 mb-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
               <div className="card p-4">
                 <div className="text-xs text-slate-500 mb-1">{t("goals.total_goals")}</div>
                 <div className="text-xl font-extrabold text-slate-800">{goals.length}</div>
@@ -1254,7 +1254,7 @@ export default function GoalsPage() {
             {savingsGoals.length > 0 && (
               <div className="mb-6">
                 <div className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Savings Goals</div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {savingsGoals.map((g, i) => (
                     <GoalCard key={g.id} goal={g} index={i} onRemove={() => handleRemove(g.id)} onEdit={() => setEditGoal(g)} />
                   ))}
@@ -1266,7 +1266,7 @@ export default function GoalsPage() {
             {emergencyGoals.length > 0 && (
               <div className="mb-6">
                 <div className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Emergency Funds</div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {emergencyGoals.map((g, i) => (
                     <GoalCard key={g.id} goal={g} index={i} onRemove={() => handleRemove(g.id)} onEdit={() => setEditGoal(g)} />
                   ))}
@@ -1278,7 +1278,7 @@ export default function GoalsPage() {
             {groupGoals.length > 0 && (
               <div>
                 <div className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Group Goals</div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {groupGoals.map((g) => (
                     <GroupGoalCard
                       key={g.id}

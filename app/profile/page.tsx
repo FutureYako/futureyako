@@ -294,7 +294,7 @@ function ProfileTab({ user, onRefresh }: { user: UserProfile; onRefresh: () => v
       </SectionCard>
 
       <SectionCard title="Personal Information" desc="Update your name, contact details, and bio.">
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="label-sm">Full Name</label>
             <input className="input-field" value={form.name} onChange={(e) => set("name")(e.target.value)} />
@@ -311,11 +311,11 @@ function ProfileTab({ user, onRefresh }: { user: UserProfile; onRefresh: () => v
             <label className="label-sm">Date of Birth</label>
             <input className="input-field" type="date" value={form.dob} onChange={(e) => set("dob")(e.target.value)} />
           </div>
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <label className="label-sm">Location</label>
             <input className="input-field" placeholder="City, Country" value={form.location} onChange={(e) => set("location")(e.target.value)} />
           </div>
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <label className="label-sm">Bio</label>
             <textarea className="input-field resize-none" rows={3} value={form.bio} onChange={(e) => set("bio")(e.target.value)} />
           </div>
@@ -599,7 +599,7 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="p-8 flex items-center justify-center min-h-[400px]">
+      <div className="p-4 sm:p-8 flex items-center justify-center min-h-100">
         <div className="text-slate-500">Loading profile...</div>
       </div>
     );
@@ -607,7 +607,7 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="p-8 flex items-center justify-center min-h-[400px]">
+      <div className="p-4 sm:p-8 flex items-center justify-center min-h-100">
         <div className="text-slate-500">Please log in to view your profile.</div>
       </div>
     );
@@ -625,9 +625,9 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="p-8 max-w-200 mx-auto w-full">
+    <div className="p-4 sm:p-8 max-w-200 mx-auto w-full">
       {/* Hero */}
-      <div className="card p-6 mb-6">
+      <div className="card p-4 sm:p-6 mb-6">
         <div className="flex items-center gap-5 mb-5">
           <div
             className="w-16 h-16 rounded-full text-white flex items-center justify-center text-xl font-extrabold shrink-0"
@@ -648,7 +648,7 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {stats.map((s) => (
             <div key={s.label} className="bg-slate-50 rounded-xl p-3 text-center">
               <div className="text-[11px] text-slate-400 mb-0.5">{s.label}</div>

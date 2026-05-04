@@ -11,14 +11,20 @@ interface User {
   last_name?: string;
 }
 
-export default function Topbar() {
+const HamburgerIcon = () => (
+  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+);
+
+export default function Topbar({ onMenuToggle }: { onMenuToggle: () => void }) {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
-      // Don't fetch if no auth token
       if (!localStorage.getItem('access_token')) return;
-
       try {
         const data = await apiGet(API_ENDPOINTS.USER.PROFILE);
         setUser(data);
@@ -26,7 +32,6 @@ export default function Topbar() {
         // Token invalid or expired — silently ignore
       }
     };
-
     fetchUser();
   }, []);
 
@@ -34,7 +39,7 @@ export default function Topbar() {
     if (!user) return "?";
     if (user.full_name) {
       const parts = user.full_name.split(" ");
-      return parts.length > 1 
+      return parts.length > 1
         ? `${parts[0][0]}${parts[1][0]}`.toUpperCase()
         : user.full_name.slice(0, 2).toUpperCase();
     }
@@ -50,11 +55,23 @@ export default function Topbar() {
   };
 
   return (
-    <header className="bg-white border-b border-slate-200 flex items-center justify-between px-8 h-[60px]">
-      <div className="text-sm text-slate-500">
-        {new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "short", day: "numeric" })}
+    <header className="bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-8 h-15">
+      <div className="flex items-center gap-3">
+        <button
+          onClick={onMenuToggle}
+          aria-label="Toggle menu"
+          className="md:hidden text-slate-500 hover:text-slate-700 transition-colors p-1"
+        >
+          <HamburgerIcon />
+        </button>
+        <div className="hidden sm:block text-sm text-slate-500">
+          {new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "short", day: "numeric" })}
+        </div>
+        <div className="sm:hidden text-sm text-slate-500">
+          {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+        </div>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 sm:gap-4">
         <button
           aria-label="Notifications"
           className="relative text-slate-500 hover:text-slate-700 transition-colors"
@@ -63,11 +80,11 @@ export default function Topbar() {
           <span className="absolute -top-1 -right-1 w-2 h-2 bg-danger rounded-full" />
         </button>
         <Link href="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer">
-          <div className="w-[34px] h-[34px] rounded-full bg-brand-500 text-white flex items-center justify-center text-[13px] font-bold">
+          <div className="w-8.5 h-8.5 rounded-full bg-brand-500 text-white flex items-center justify-center text-[13px] font-bold shrink-0">
             {getInitials()}
           </div>
-          <span className="text-sm font-semibold text-slate-800">{getDisplayName()}</span>
-          <ChevronDown size={14} className="text-slate-500" />
+          <span className="hidden sm:block text-sm font-semibold text-slate-800">{getDisplayName()}</span>
+          <ChevronDown size={14} className="text-slate-500 hidden sm:block" />
         </Link>
       </div>
     </header>

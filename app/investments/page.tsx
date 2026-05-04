@@ -535,7 +535,7 @@ export default function InvestmentsPage() {
 
   if (isLoading) {
     return (
-      <div className="p-8 flex items-center justify-center min-h-[400px]">
+      <div className="p-4 sm:p-8 flex items-center justify-center min-h-100">
         <div className="text-slate-500">Loading investments...</div>
       </div>
     );
@@ -545,9 +545,9 @@ export default function InvestmentsPage() {
   const returnsPct = totalInvested > 0 ? ((totalReturns / totalInvested) * 100).toFixed(1) : "0.0";
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
         <div>
           <h1 className="text-xl font-extrabold text-slate-800">{t("investments.available_funds")}</h1>
           <p className="text-slate-400 text-sm mt-0.5">{t("investments.title")}</p>
@@ -585,7 +585,7 @@ export default function InvestmentsPage() {
         <div className="font-bold text-[15px] text-slate-800 mb-4">{t("investments.my_investments")}</div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-5">
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-5">
           {[
             { label: t("investments.total_invested"), val: formatCurrency(totalInvested), green: false, delta: null },
             { label: t("investments.total_returns"), val: `${totalReturns >= 0 ? "+" : ""}${formatCurrency(totalReturns)}`, green: totalReturns >= 0, delta: totalInvested > 0 ? `${returnsPct}%` : null },

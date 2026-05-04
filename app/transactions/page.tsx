@@ -62,13 +62,13 @@ export default function TransactionsPage() {
   const net = totalIn - totalOut;
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <div className="mb-5">
         <h1 className="text-xl font-extrabold text-slate-800">{t("transactions.title")}</h1>
         <p className="text-slate-500 text-sm">{t("transactions.history")}</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 mb-5">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5">
         <div className="card p-4">
           <div className="text-xs text-slate-500 mb-1">{t("transactions.total_in")}</div>
           <div className="text-xl font-extrabold text-success">+{formatCurrency(totalIn)}</div>
@@ -85,9 +85,9 @@ export default function TransactionsPage() {
         </div>
       </div>
 
-      <div className="card p-6">
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex gap-2">
+      <div className="card p-4 sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+          <div className="flex flex-wrap gap-2">
             {TABS.map((t) => (
               <button
                 key={t}

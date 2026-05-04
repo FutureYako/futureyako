@@ -58,7 +58,7 @@ export default function HelpPage() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <div className="mb-5">
         <h1 className="text-xl font-extrabold text-slate-800">Help & Support</h1>
         <p className="text-slate-500 text-sm">Find answers and get in touch with our team</p>
@@ -68,7 +68,7 @@ export default function HelpPage() {
         <input className="input-field" placeholder="Search for help topics…" />
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
         {CONTACT.map((c) => {
           const Icon = c.icon;
           return (

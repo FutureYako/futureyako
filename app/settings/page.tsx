@@ -627,7 +627,7 @@ function PreferencesTab() {
   return (
     <>
       <SectionCard title="Display Preferences" desc="Customise currency, language, and appearance.">
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="label-sm">Currency</label>
             <select className="input-field" value={currency} onChange={(e) => setCurrency(e.target.value as Currency)}>
@@ -640,7 +640,7 @@ function PreferencesTab() {
               {LANGUAGES.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
             </select>
           </div>
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <label className="label-sm">Theme</label>
             <div className="flex gap-2">
               {THEMES.map((t) => (
@@ -822,13 +822,13 @@ export default function SettingsPage() {
   const [tab, setTab] = useState<Tab>("notifications");
 
   return (
-    <div className="p-8 max-w-200 mx-auto w-full">
+    <div className="p-4 sm:p-8 max-w-200 mx-auto w-full">
       <div className="mb-6">
         <h1 className="text-xl font-extrabold text-slate-800">Settings</h1>
         <p className="text-slate-500 text-sm">Manage notifications, security, and account preferences</p>
       </div>
 
-      <div className="flex gap-1 bg-slate-100 rounded-xl p-1 mb-6">
+      <div className="grid grid-cols-2 sm:flex gap-1 bg-slate-100 rounded-xl p-1 mb-6">
         {TABS.map(({ id, label, Icon }) => (
           <button
             key={id}
