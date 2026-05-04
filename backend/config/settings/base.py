@@ -196,6 +196,8 @@ DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="SaveWise <noreply@sav
 
 ULTRANER_API_KEY = config("ULTRANER_API_KEY", default="")
 ULTRANER_WEBHOOK_SECRET = config("ULTRANER_WEBHOOK_SECRET", default="")
+ULTRANER_VIA_URL = config("ULTRANER_VIA_URL", default="")
+ULTRANER_FORWARDER_SECRET = config("FORWARDER_SECRET", default="")
 
 # ── CORS ──────────────────────────────────────────────────────────────────────
 

@@ -1,4 +1,3 @@
-import os
 import requests
 from django.conf import settings
 
@@ -6,8 +5,8 @@ ULTRANER_BASE = "https://api.ultraner.com"
 
 # When Django is hosted on a platform that restricts outbound connections (e.g. PythonAnywhere),
 # set ULTRANER_VIA_URL to the Next.js forwarder URL so calls route through Vercel instead.
-_ULTRANER_VIA_URL = os.environ.get("ULTRANER_VIA_URL", "").rstrip("/")
-_FORWARDER_SECRET = os.environ.get("FORWARDER_SECRET", "")
+_ULTRANER_VIA_URL = getattr(settings, "ULTRANER_VIA_URL", "").rstrip("/")
+_FORWARDER_SECRET = getattr(settings, "ULTRANER_FORWARDER_SECRET", "")
 
 # Canonical provider names as Ultraner expects them
 _PROVIDER_CANONICAL = {
