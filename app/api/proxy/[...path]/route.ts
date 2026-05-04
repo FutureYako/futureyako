@@ -10,7 +10,6 @@ export async function GET(req: Request, { params }: { params: { path: string[] }
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        // Add any additional headers if required
       },
     });
 
@@ -33,7 +32,6 @@ export async function POST(req: Request, { params }: { params: { path: string[] 
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Add any additional headers if required
       },
       body: JSON.stringify(body),
     });

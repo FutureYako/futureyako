@@ -217,6 +217,8 @@ export const apiRequest = async (url: string, options: RequestInit = {}, _retry 
 
       if (response.status >= 500) {
         console.error(`API ${response.status} error on ${url}`);
+        console.error('Request options:', options);
+        console.error('Response data:', errorData);
       }
 
       if (typeof errorData === 'object' && errorData !== null) {
