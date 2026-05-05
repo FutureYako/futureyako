@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { UserIcon, EyeIcon } from "@/components/icons";
-import { API_ENDPOINTS, apiPost, apiGet } from "@/lib/api";
+import { API_ENDPOINTS, apiPost } from "@/lib/api";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -52,23 +52,7 @@ export default function LoginPage() {
       }
 
       const isAdmin = response.user?.is_staff || response.user?.is_superuser;
-      if (isAdmin) {
-        router.push("/admin");
-        return;
-      }
-
-      // Resume incomplete onboarding if not yet finished
-      try {
-        const onboarding = await apiGet(API_ENDPOINTS.USER.ONBOARDING);
-        if (!onboarding.completed) {
-          router.push(onboarding.current_step === "funding_source" ? "/link-sources" : "/saving-preferences");
-          return;
-        }
-      } catch {
-        // onboarding check failed — fall through to dashboard
-      }
-
-      router.push("/dashboard");
+      router.push(isAdmin ? "/admin" : "/dashboard");
     } catch (error: any) {
       if (error.message && typeof error.message === 'object') {
         const validationErrors: Record<string, string> = {};

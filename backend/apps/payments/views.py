@@ -290,54 +290,70 @@ def ultraner_webhook(request):
     """
     Receive payment status callbacks from Ultraner.
 
-    Expected body:
-      event          — "payment.completed" | "payment.failed" | "payment.cancelled"
-      reference      — our transaction reference_number
-      transaction_id — Ultraner's own ID (informational)
-      status         — "completed" | "failed" | "cancelled"
-      failure_reason — present when failed/cancelled
-      amount         — confirmed amount (for logging)
+    Ultraner payload shape:
+      {
+        "event": "payment.success" | "payment.failed",
+        "created_at": "...",
+        "data": {
+          "transaction_id": "<ultraner-internal-id>",
+          "merchant_reference": "<our TXN-XXXXXXXXXX>",
+          "type": "express",
+          "amount": 1000,
+          "currency": "TZS",
+          "provider_channel": "mno",
+          "wallet_id": "..."
+        }
+      }
+
+    HMAC signing: Ultraner signs with HMAC-SHA256 using SHA-256(rawSecret) as key.
+    Header: X-Ultraner-Signature: sha256=<hex>
     """
-    # Verify HMAC signature when a webhook secret is configured
-    # Ultraner sends: X-Ultraner-Signature: sha256=<hex>
+    # Verify HMAC — Ultraner signs with SHA-256(rawSecret) as the HMAC key,
+    # not the raw secret itself. We must hash our stored secret first.
     webhook_secret = getattr(settings, "ULTRANER_WEBHOOK_SECRET", "")
     if webhook_secret:
         sig_header = request.headers.get("X-Ultraner-Signature", "")
+        secret_hash = hashlib.sha256(webhook_secret.encode()).hexdigest()
         expected_hex = hmac.new(
-            webhook_secret.encode(), request.body, hashlib.sha256
+            secret_hash.encode(), request.body, hashlib.sha256
         ).hexdigest()
         expected = f"sha256={expected_hex}"
         if not hmac.compare_digest(sig_header, expected):
             return Response({"error": "Invalid signature."}, status=status.HTTP_401_UNAUTHORIZED)
 
-    event = request.data.get("event", "")
-    reference = str(request.data.get("reference", "")).strip()
-    payment_status = str(request.data.get("status", "")).strip()
+    event = str(request.data.get("event", "")).strip()
+    data = request.data.get("data") or {}
+    merchant_reference = str(data.get("merchant_reference", "")).strip()
 
-    if not reference:
-        return Response({"error": "reference is required."}, status=status.HTTP_400_BAD_REQUEST)
+    if not merchant_reference:
+        return Response({"error": "data.merchant_reference is required."}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         txn = Transaction.objects.get(
-            reference_number=reference, transaction_type="Deposit"
+            reference_number=merchant_reference, transaction_type="Deposit"
         )
     except Transaction.DoesNotExist:
         return Response({"error": "Transaction not found."}, status=status.HTTP_404_NOT_FOUND)
 
     # Idempotent — ignore if already settled
-    if txn.status == "completed":
-        return Response({"status": "already_completed"})
+    if txn.status in ("completed", "failed"):
+        return Response({"status": f"already_{txn.status}"})
 
-    if event in ("payment.success", "payment.completed") or payment_status in ("success", "completed"):
+    if event == "payment.success":
         with db_transaction.atomic():
             txn.mark_completed()
+
+        # Run goal distribution outside the atomic block so a goal error
+        # cannot roll back the completed transaction.
+        try:
             from apps.transactions.views import _distribute_to_goals
             _distribute_to_goals(txn.user, txn.net_amount)
+        except Exception:
+            pass
 
         _broadcast_deposit_updates(txn)
 
-    elif event in ("payment.failed", "payment.cancelled") or payment_status in ("failed", "cancelled"):
-        reason = str(request.data.get("failure_reason", "Payment did not complete."))[:200]
-        txn.mark_failed(reason)
+    elif event == "payment.failed":
+        txn.mark_failed("Payment was not completed by the user.")
 
     return Response({"status": "ok"})

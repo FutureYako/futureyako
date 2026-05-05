@@ -96,8 +96,7 @@ class UltranerClient:
             "provider": provider,
             "amount": amount,
             "currency": currency,
-            "reference": reference,
-            "description": description,
+            "merchant_reference": reference,
         })
 
     def bank_checkout(
