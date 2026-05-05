@@ -354,6 +354,7 @@ def ultraner_webhook(request):
         _broadcast_deposit_updates(txn)
 
     elif event == "payment.failed":
-        txn.mark_failed("Payment was not completed by the user.")
+        reason = str(data.get("failure_reason") or "Payment was not completed by the user.")
+        txn.mark_failed(reason[:200])
 
     return Response({"status": "ok"})
