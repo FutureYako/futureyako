@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django.db.models import ProtectedError
 from .models import Wallet, FundingSource
 from .serializers import (
     WalletSerializer, 
@@ -58,6 +59,16 @@ class FundingSourceDetailView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method in ['PUT', 'PATCH']:
             return FundingSourceUpdateSerializer
         return FundingSourceSerializer
+
+    def perform_destroy(self, instance):
+        try:
+            instance.delete()
+        except ProtectedError:
+            from rest_framework.exceptions import APIException
+            raise APIException(
+                detail="This funding source cannot be deleted because it has associated deduction history. You can unlink it from your auto-save settings instead.",
+                code="protected_reference",
+            )
 
 
 @api_view(['POST'])

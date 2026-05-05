@@ -49,7 +49,7 @@ export default function SavingRoutingPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-5 py-8">
-      <div className="max-w-[480px] w-full">
+      <div className="max-w-120 w-full">
         {/* Step indicators */}
         <div className="flex justify-center gap-2 mb-7">
           {STEPS.map((_, i) => (
@@ -72,7 +72,7 @@ export default function SavingRoutingPage() {
           ))}
         </div>
 
-        <div className="card p-8">
+        <div className="card p-5 sm:p-8">
           <div className="text-center mb-6">
             <h1 className="text-xl font-extrabold text-slate-800 mb-1">
               Where should your savings go?
@@ -88,7 +88,7 @@ export default function SavingRoutingPage() {
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-3 mb-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
             {ROUTES.map(({ id, Icon, title, desc }) => {
               const active = route === id;
               return (

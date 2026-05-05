@@ -13,7 +13,7 @@ export default function EditSavingPreferencesPage() {
   const [src, setSrc] = useState("Both");
 
   return (
-    <div className="p-8 max-w-150 mx-auto w-full">
+    <div className="p-4 sm:p-8 max-w-150 mx-auto w-full">
       <div className="mb-6">
         <h1 className="text-xl font-extrabold text-slate-800 mb-1">
           Edit Saving Preferences

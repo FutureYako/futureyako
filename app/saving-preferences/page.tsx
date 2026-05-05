@@ -103,7 +103,7 @@ export default function SavingPreferencesPage() {
           ))}
         </div>
 
-        <div className="card p-8">
+        <div className="card p-5 sm:p-8">
           <div className="text-center mb-6">
             <h1 className="text-xl font-extrabold text-slate-800 mb-1">
               Set your saving preferences

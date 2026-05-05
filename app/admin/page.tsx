@@ -427,7 +427,7 @@ function OverviewTab() {
 
   return (
     <div className="space-y-5">
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {kpiCards.map(({ label, val, sub, Icon, color, bg }) => (
           <div key={label} className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${bg} ${color}`}><Icon size={16} /></div>
@@ -438,7 +438,7 @@ function OverviewTab() {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
           <div className="font-bold text-[14px] text-slate-800 mb-0.5">User Registrations</div>
           <div className="text-[11px] text-slate-400 mb-4">Monthly new users</div>
@@ -451,7 +451,7 @@ function OverviewTab() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
           <div className="font-bold text-[14px] text-slate-800 mb-4">System Alerts</div>
           <div className="space-y-2.5">
@@ -1627,7 +1627,7 @@ function BroadcastTab() {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-5">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
         <div className="font-bold text-[14px] text-slate-800 mb-4">Compose Notification</div>
         <div className="space-y-3 mb-5">
@@ -1751,7 +1751,7 @@ function PlatformSettingsTab() {
   return (
     <div className="max-w-150">
       <SCard title="Saving Rules" desc="Platform-wide constraints applied to all users.">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Min. Duration (months)</label>
             <input className="input-field" type="number" min={1} value={settings.min_saving_duration_months}
@@ -1864,6 +1864,7 @@ export default function AdminPage() {
   const [tab, setTab] = useState<AdminTab>("overview");
   const [withdrawalBadge, setWithdrawalBadge] = useState(0);
   const [adminUser, setAdminUser] = useState<{ name: string; email: string } | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -1893,20 +1894,28 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
-      <aside className="w-60 shrink-0 bg-slate-900 min-h-screen flex flex-col fixed top-0 left-0 z-10">
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-20 bg-slate-900/40 md:hidden" onClick={() => setSidebarOpen(false)} />
+      )}
+      <aside className={`w-60 shrink-0 bg-slate-900 min-h-screen flex flex-col fixed top-0 left-0 z-30 transition-transform duration-200 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}>
         <div className="px-5 py-5 border-b border-white/10">
-          <div className="flex items-center gap-2.5 mb-0.5">
-            <div className="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white">
-              <WalletIcon size={15} />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5 mb-0.5">
+              <div className="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white">
+                <WalletIcon size={15} />
+              </div>
+              <span className="font-extrabold text-white text-[15px] tracking-tight">SaveWise</span>
             </div>
-            <span className="font-extrabold text-white text-[15px] tracking-tight">SaveWise</span>
+            <button onClick={() => setSidebarOpen(false)} className="md:hidden text-slate-400 hover:text-white p-1">
+              <XIcon size={18} />
+            </button>
           </div>
           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-10">Admin Panel</div>
         </div>
 
         <nav className="flex-1 py-4 px-3 space-y-0.5 overflow-y-auto">
           {NAV.map(({ id, label, Icon, badge }) => (
-            <button key={id} onClick={() => setTab(id)}
+            <button key={id} onClick={() => { setTab(id); setSidebarOpen(false); }}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-all text-left ${tab === id ? "bg-brand-500 text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"}`}>
               <Icon size={15} />
               <span className="flex-1">{label}</span>
@@ -1936,11 +1945,18 @@ export default function AdminPage() {
         </div>
       </aside>
 
-      <main className="flex-1 ml-60 min-h-screen flex flex-col">
-        <div className="sticky top-0 z-10 bg-white/90 backdrop-blur-sm border-b border-slate-100 px-8 py-4 flex items-center justify-between shrink-0">
-          <div>
-            <h1 className="text-lg font-extrabold text-slate-800">{TAB_TITLES[tab]}</h1>
-            <p className="text-[11px] text-slate-400">SaveWise Admin · {new Date().toLocaleDateString("en-US", { dateStyle: "long" })}</p>
+      <main className="flex-1 ml-0 md:ml-60 min-h-screen flex flex-col">
+        <div className="sticky top-0 z-10 bg-white/90 backdrop-blur-sm border-b border-slate-100 px-4 sm:px-8 py-4 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setSidebarOpen(true)} className="md:hidden text-slate-500 hover:text-slate-700 p-1">
+              <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+                <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+            <div>
+              <h1 className="text-lg font-extrabold text-slate-800">{TAB_TITLES[tab]}</h1>
+              <p className="text-[11px] text-slate-400 hidden sm:block">SaveWise Admin · {new Date().toLocaleDateString("en-US", { dateStyle: "long" })}</p>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="relative">
@@ -1954,7 +1970,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-4 sm:p-8">
           {tab === "overview" && <OverviewTab />}
           {tab === "users" && <UsersTab />}
           {tab === "goals" && <GoalsTab />}

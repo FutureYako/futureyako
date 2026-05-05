@@ -9,7 +9,7 @@ export default function TermsPage() {
 
   return (
     <div className="min-h-screen bg-[#f5f4ff] px-5 py-10">
-      <div className="max-w-[720px] mx-auto">
+      <div className="max-w-180 mx-auto">
         <div className="card p-8 md:p-10">
           {/* Header */}
           <div className="mb-8 pb-6 border-b border-slate-100">

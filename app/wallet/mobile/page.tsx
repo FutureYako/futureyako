@@ -330,13 +330,13 @@ export default function MobileWalletPage() {
 
   return (
     <>
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <h1 className="text-xl font-extrabold text-slate-800 mb-5">Mobile Money Wallet</h1>
 
         {isLoading ? (
           <div className="flex items-center justify-center min-h-50 text-slate-400">Loading…</div>
         ) : (
-          <div className="grid grid-cols-[1.4fr_1fr] gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6">
             <div>
               <div className="card p-6 mb-5 text-white bg-linear-to-br from-success to-green-600">
                 <div className="text-xs opacity-85 mb-0.5">Mobile Money Wallet</div>

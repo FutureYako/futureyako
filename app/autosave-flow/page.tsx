@@ -192,12 +192,12 @@ function DepositModal({
       {/* Backdrop */}
       <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
 
         {/* ── Step: Form ── */}
         {step === "form" && (
           <>
-            <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 shrink-0">
               <div>
                 <h2 className="text-[16px] font-extrabold text-slate-800">Deposit to Wallet</h2>
                 <p className="text-[12px] text-slate-400 mt-0.5">Add money to your SaveWise wallet manually</p>
@@ -207,7 +207,7 @@ function DepositModal({
               </button>
             </div>
 
-            <div className="px-6 py-5 space-y-5">
+            <div className="px-6 py-5 space-y-5 overflow-y-auto flex-1">
               {/* Amount */}
               <div>
                 <label className="label-sm">Amount</label>
@@ -303,7 +303,7 @@ function DepositModal({
               </div>
             </div>
 
-            <div className="px-6 pb-6 flex gap-3">
+            <div className="px-6 pb-6 flex gap-3 shrink-0">
               <button onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-500 hover:bg-slate-50 transition-colors">
                 Cancel
               </button>
@@ -321,14 +321,14 @@ function DepositModal({
         {/* ── Step: Review ── */}
         {step === "review" && (
           <>
-            <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 shrink-0">
               <h2 className="text-[16px] font-extrabold text-slate-800">Review Deposit</h2>
               <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors p-1">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             </div>
 
-            <div className="px-6 py-5 space-y-4">
+            <div className="px-6 py-5 space-y-4 overflow-y-auto flex-1">
               {/* Summary card */}
               <div className="bg-brand-50 border border-brand-200 rounded-2xl p-5 text-center">
                 <p className="text-[12px] text-brand-500 font-semibold uppercase tracking-wider mb-1">Depositing</p>
@@ -388,7 +388,7 @@ function DepositModal({
               )}
             </div>
 
-            <div className="px-6 pb-6 flex gap-3">
+            <div className="px-6 pb-6 flex gap-3 shrink-0">
               <button
                 onClick={() => { setStep("form"); setError(null); }}
                 className="flex-1 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-500 hover:bg-slate-50 transition-colors"
@@ -689,15 +689,15 @@ export default function AutoSaveFlowPage() {
         />
       )}
 
-      <div className="max-w-6xl mx-auto px-6 py-8 space-y-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-8 space-y-6">
 
         {/* ── Header ── */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-2xl font-extrabold text-slate-800">Auto-Save Flow</h1>
             <p className="text-slate-500 text-sm mt-0.5">Live view of how money moves through your account</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             {lastUpdated && (
               <span className="text-xs text-slate-400">
                 Updated {secondsAgo < 5 ? "just now" : `${secondsAgo}s ago`}
@@ -726,7 +726,7 @@ export default function AutoSaveFlowPage() {
         </div>
 
         {/* ── Flow Diagram ── */}
-        <div className="flex items-stretch gap-0">
+        <div className="flex flex-col md:flex-row items-stretch gap-4 md:gap-0">
 
           {/* Column 1: Funding Sources */}
           <div className="flex-1 card p-5 space-y-3">

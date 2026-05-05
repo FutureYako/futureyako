@@ -32,7 +32,7 @@ export default function LinkSourcesPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-5 py-8">
-      <div className="max-w-[440px] w-full">
+      <div className="max-w-110 w-full">
         <div className="flex justify-center gap-2 mb-7">
           {STEPS.map((_, i) => (
             <div key={i} className="flex items-center gap-1.5">
@@ -54,7 +54,7 @@ export default function LinkSourcesPage() {
           ))}
         </div>
 
-        <div className="card p-8">
+        <div className="card p-5 sm:p-8">
           <div className="text-center mb-6">
             <h1 className="text-xl font-extrabold text-slate-800 mb-1">
               Link your funding sources

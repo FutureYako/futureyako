@@ -26,7 +26,7 @@ export default function RoutingPage() {
   const [route, setRoute] = useState("wallet");
 
   return (
-    <div className="p-8 max-w-[600px] mx-auto w-full">
+    <div className="p-4 sm:p-8 max-w-150 mx-auto w-full">
       <Stepper steps={SETUP_STEPS} current={2} />
 
       <div className="card p-7">
@@ -37,7 +37,7 @@ export default function RoutingPage() {
           Choose how your savings will be managed
         </p>
 
-        <div className="grid grid-cols-2 gap-4 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
           {ROUTES.map((r) => {
             const Icon = r.icon;
             const isActive = route === r.id;

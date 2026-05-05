@@ -55,6 +55,32 @@ function AddSourceDialog({
   const [phone, setPhone] = useState("");
   const [walletName, setWalletName] = useState("");
 
+  const PROVIDER_WALLET_MAP: Record<string, string> = {
+    tigo: "Tigo",
+    yas: "Tigo",
+    tigopesa: "Tigo",
+    mixx: "Tigo",
+    vodacom: "Mpesa",
+    mpesa: "Mpesa",
+    airtel: "Airtel",
+    airtelmoney: "Airtel",
+    halotel: "Halopesa",
+    halopesa: "Halopesa",
+  };
+
+  function walletNameForProvider(name: string): string {
+    const key = name.toLowerCase().replace(/[\s_-]/g, "");
+    for (const [fragment, mapped] of Object.entries(PROVIDER_WALLET_MAP)) {
+      if (key.includes(fragment)) return mapped;
+    }
+    return "";
+  }
+
+  function handleProviderChange(name: string) {
+    setProvider(name);
+    setWalletName(walletNameForProvider(name));
+  }
+
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
@@ -112,12 +138,12 @@ function AddSourceDialog({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6">
       <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px]" onClick={onClose} />
-      <div className="relative card w-full max-w-[460px] z-10 overflow-hidden">
+      <div className="relative card w-full max-w-[460px] z-10 flex flex-col max-h-[90vh] overflow-hidden">
 
         {step === "type" && (
-          <div className="p-7">
+          <div className="p-7 overflow-y-auto">
             <h2 className="text-lg font-extrabold text-slate-800 mb-1">Add a funding source</h2>
             <p className="text-slate-500 text-[13px] mb-5">Choose the type of account you want to link</p>
             <div className="grid grid-cols-2 gap-3 mb-6">
@@ -149,7 +175,7 @@ function AddSourceDialog({
         )}
 
         {step === "form" && (
-          <div className="p-7">
+          <div className="p-7 overflow-y-auto flex-1">
             <button
               className="flex items-center gap-1 text-[13px] text-slate-400 hover:text-brand-500 transition-colors mb-4"
               onClick={() => !initialType && setStep("type")}
@@ -189,7 +215,7 @@ function AddSourceDialog({
                 <>
                   <div>
                     <label className="label-sm">Provider</label>
-                    <select className="input-field" value={provider} onChange={(e) => setProvider(e.target.value)} disabled={loadingProviders}>
+                    <select className="input-field" value={provider} onChange={(e) => handleProviderChange(e.target.value)} disabled={loadingProviders}>
                       <option value="">{loadingProviders ? "Loading providers…" : mobileProviders.length === 0 ? "No providers available" : "Select your provider…"}</option>
                       {mobileProviders.map((p) => <option key={p.id} value={p.name}>{p.name}</option>)}
                     </select>
@@ -200,7 +226,10 @@ function AddSourceDialog({
                   </div>
                   <div>
                     <label className="label-sm">Wallet / Account Name</label>
-                    <input className="input-field" placeholder="Name on this wallet" value={walletName} onChange={(e) => setWalletName(e.target.value)} />
+                    <div className={`input-field flex items-center gap-2 ${walletName ? "bg-brand-50 border-brand-200 text-brand-700" : "text-slate-400"}`}>
+                      {walletName || <span className="text-slate-400">Select a provider above…</span>}
+                      {walletName && <span className="ml-auto text-[10px] font-bold text-brand-500 bg-brand-100 px-1.5 py-0.5 rounded-full shrink-0">AUTO</span>}
+                    </div>
                   </div>
                 </>
               )}
@@ -251,6 +280,7 @@ export default function FundingSourcesPage() {
   const [sources, setSources] = useState<FundingSourceAPI[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [removing, setRemoving] = useState<string | null>(null);
+  const [removeError, setRemoveError] = useState<string | null>(null);
   const [settingPrimary, setSettingPrimary] = useState<string | null>(null);
   const [dialog, setDialog] = useState<{ open: boolean; type?: SourceType }>({ open: false });
 
@@ -269,11 +299,12 @@ export default function FundingSourcesPage() {
   };
 
   async function handleRemove(id: string) {
+    setRemoveError(null);
     try {
       await apiDelete(`${API_ENDPOINTS.WALLETS.FUNDING_SOURCES}${id}/`);
       setSources((prev) => prev.filter((s) => s.id !== id));
-    } catch (err) {
-      console.error("Failed to remove funding source:", err);
+    } catch (err: any) {
+      setRemoveError(err.message || "Failed to remove funding source.");
     }
     setRemoving(null);
   }
@@ -309,6 +340,13 @@ export default function FundingSourcesPage() {
                 + Add Source
               </button>
             </div>
+
+            {removeError && (
+              <div className="mb-4 p-3 bg-danger-light border border-danger/20 rounded-xl text-sm text-danger flex items-start justify-between gap-3">
+                <span>{removeError}</span>
+                <button onClick={() => setRemoveError(null)} className="text-danger/60 hover:text-danger shrink-0 font-bold leading-none">×</button>
+              </div>
+            )}
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">

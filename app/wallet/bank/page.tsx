@@ -320,10 +320,10 @@ export default function BankWalletPage() {
 
   if (isLoading) {
     return (
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-slate-200 rounded w-1/3" />
-          <div className="grid grid-cols-[1.4fr_1fr] gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6">
             <div className="space-y-4">
               <div className="h-48 bg-slate-200 rounded" />
               <div className="h-56 bg-slate-200 rounded" />
@@ -340,7 +340,7 @@ export default function BankWalletPage() {
 
   if (fetchError) {
     return (
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <div className="card p-6 text-center">
           <p className="text-danger mb-4">{fetchError}</p>
           <button onClick={load} className="btn-primary w-auto! px-6 mx-auto">Retry</button>
@@ -351,10 +351,10 @@ export default function BankWalletPage() {
 
   return (
     <>
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <h1 className="text-xl font-extrabold text-slate-800 mb-5">Bank Wallet</h1>
 
-        <div className="grid grid-cols-[1.4fr_1fr] gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6">
           <div>
             <div className="card p-6 mb-5 text-white bg-linear-to-br from-brand-500 to-brand-400">
               <div className="text-xs opacity-85 mb-0.5">Bank Wallet</div>
